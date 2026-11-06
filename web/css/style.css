@@ -1,0 +1,219 @@
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: transparent;
+  user-select: none;
+}
+
+.mg-keymash {
+  --seg: #141417;
+  --white: #f2f2f2;
+  --red: #e5173f;
+  --ok: #3ee08a;
+  --track: rgba(242, 242, 242, 0.18);
+  --t-fast: 120ms;
+  --t-norm: 250ms;
+  --t-slow: 450ms;
+  --e: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  position: fixed;
+  bottom: 150px;
+  left: 50%;
+  width: 132px;
+  height: 132px;
+  transform: translateX(-50%);
+  z-index: 100;
+  font-family: 'Montserrat', sans-serif;
+  color: var(--white);
+  user-select: none;
+}
+
+.mg-keymash,
+.mg-keymash *,
+.mg-keymash *::before,
+.mg-keymash *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.mg-keymash::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 520px;
+  height: 360px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse 50% 45% at 50% 50%,
+    rgba(0, 0, 0, 0.45) 0%,
+    rgba(0, 0, 0, 0.2) 45%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--t-norm) var(--e);
+  pointer-events: none;
+}
+
+.mg-keymash.on::before {
+  opacity: 1;
+}
+
+.mg-keymash .widget {
+  position: absolute;
+  inset: 0;
+  transform: scale(0.6);
+  opacity: 0;
+  transition: transform var(--t-norm) var(--e), opacity var(--t-norm) var(--e);
+}
+
+.mg-keymash.on .widget {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.mg-keymash.out .widget {
+  transform: scale(0.82);
+  opacity: 0;
+  transition-duration: var(--t-slow);
+}
+
+.mg-keymash .inner {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+}
+
+.mg-keymash .inner.jolt {
+  animation: keymash-jolt var(--t-fast) var(--e);
+}
+
+@keyframes keymash-jolt {
+  0% { transform: translate(0, 0); }
+  35% { transform: translate(var(--jx), var(--jy)); }
+  100% { transform: translate(0, 0); }
+}
+
+.mg-keymash .ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.mg-keymash .ring .trk {
+  stroke: var(--track);
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.mg-keymash .ring .segf {
+  stroke: var(--white);
+  fill: none;
+  stroke-width: 5;
+  stroke-linecap: round;
+}
+
+.mg-keymash .ring .trk.low {
+  stroke: rgba(229, 23, 63, 0.5);
+  animation: keymash-track-pulse 500ms ease-in-out infinite alternate;
+}
+
+@keyframes keymash-track-pulse {
+  from { opacity: 1; }
+  to { opacity: 0.4; }
+}
+
+.mg-keymash .disc {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 66px;
+  height: 66px;
+  margin: -33px 0 0 -33px;
+  border-radius: 50%;
+  background: var(--seg);
+  overflow: hidden;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  will-change: transform;
+}
+
+.mg-keymash .disc.nudge {
+  animation: keymash-nudge var(--t-fast) var(--e);
+}
+
+@keyframes keymash-nudge {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.045); }
+  100% { transform: scale(1); }
+}
+
+.mg-keymash .disc.shake {
+  animation: keymash-shake var(--t-norm) var(--e);
+}
+
+@keyframes keymash-shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-1.5px); }
+  75% { transform: translateX(1.5px); }
+}
+
+.mg-keymash .lyr {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+}
+
+.mg-keymash .lyr.fill {
+  background: var(--white);
+  color: var(--seg);
+  clip-path: inset(100% 0 0 0);
+  transition: background var(--t-norm) var(--e), color var(--t-norm) var(--e);
+}
+
+.mg-keymash .lyr.fill.warn,
+.mg-keymash .lyr.fill.red {
+  background: var(--red);
+  color: var(--white);
+}
+
+.mg-keymash .lyr.fill.ok {
+  background: var(--ok);
+  color: var(--seg);
+}
+
+.mg-keymash .key {
+  font-weight: 900;
+  font-style: italic;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  font-size: 28px;
+  line-height: 1;
+  transform: translateX(-1px);
+  font-variant-numeric: tabular-nums;
+  transition: opacity var(--t-fast) var(--e), transform var(--t-fast) var(--e);
+}
+
+.mg-keymash .key.sm {
+  font-size: 15px;
+  letter-spacing: 0.04em;
+}
+
+.mg-keymash .key.swap {
+  opacity: 0;
+  transform: translate(-1px, 6px);
+}
+
+.mg-keymash .key svg {
+  width: 30px;
+  height: 30px;
+  display: block;
+}

@@ -1,0 +1,20 @@
+{
+    "target_pry": "Pry open ATM",
+    "target_pickup": "Pick up cash",
+
+    "need_crowbar": "You need a crowbar in your hand",
+    "cooldown": "Lay low for %s more minutes",
+    "already_robbed": "This ATM has already been robbed",
+    "atm_busy": "Someone is already working on this ATM",
+    "not_enough_police": "Not enough police in the city",
+    "pry_failed": "You couldn't pry the ATM open",
+    "atm_opened": "The ATM is out, grab the cash",
+
+    "picked_up": "You picked up %s%s",
+    "picked_up_item": "You picked up %sx %s",
+    "note_gone": "Someone already took that",
+    "cant_carry": "You can't carry that",
+
+    "dispatch_title": "ATM Robbery",
+    "dispatch_desc": "Someone is breaking an ATM out of the wall with a crowbar"
+}
